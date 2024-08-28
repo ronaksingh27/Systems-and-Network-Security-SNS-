@@ -1,0 +1,7 @@
+!#/bin/bash 
+!# -> tells the OS that this file should be executed as a script
+/bin/bash -> tell system to use the bash  commandline intrepreter( shell)
+
+1.when you execute the script ( eg. ./script.sh) , the kernel checks for the first two characters of the file
+2.If kernel detects '!#' then it understand that this file is a script , not a binary executable , ans that it needs to use a specified intrepreter to run it
+3.The kernel reads the rest of the line after '#!' to determine the path to the interpreter( eg '/bin/bash'
