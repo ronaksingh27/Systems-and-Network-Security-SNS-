@@ -4,7 +4,7 @@ read -p "Enter the number of assignments: "  num_assignments
 absolute_path=$(pwd)
 
 
-echo "Absolute path: $pwd"
+echo "Absolute path: '$absolute_path' "
 
 for(( i=1; i<=num_assignments ; i++ ))
 do

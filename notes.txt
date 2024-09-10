@@ -5,3 +5,12 @@
 1.when you execute the script ( eg. ./script.sh) , the kernel checks for the first two characters of the file
 2.If kernel detects '!#' then it understand that this file is a script , not a binary executable , ans that it needs to use a specified intrepreter to run it
 3.The kernel reads the rest of the line after '#!' to determine the path to the interpreter( eg '/bin/bash'
+
+'./' means the current directory, it can be used to run a executable or script
+
+
+
+
+/********RANDOM***********/
+mkdir Assignment2 && cd Assignment2 && cp ../Assignment1/script.sh ../Assignment2/ && ./script.sh
+mkdir -p "$(pwd)/Assignment1"
