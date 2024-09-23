@@ -25,12 +25,12 @@ char val_to_char(int val) {
     } else if (val == 10) {
         return ' '; // 10 -> ' '
     } else if (val >= 11 && val <= 36) {
-        return 'A' + (val - 11); // 11-36 -> 'A'-'Z'
+        return 'a' + (val - 11); // 11-36 -> 'a'-'z'
     }
     return '?'; // Invalid value
 }
 
-// Function to perform Caesar Cipher using GMP for number shifts
+// Function to perform Caesar Cipher encryption using GMP for number shifts
 void caesar_cipher_using_gmp(char *input, char *output) {
     mpz_t pos, shifted_pos;
     
@@ -61,6 +61,42 @@ void caesar_cipher_using_gmp(char *input, char *output) {
     mpz_clear(shifted_pos);
 }
 
+// Function to perform Caesar Cipher decryption using GMP
+void caesar_decipher_using_gmp(char *input, char *output) {
+    mpz_t pos, shifted_pos;
+    
+    // Initialize GMP integers
+    mpz_init(pos);
+    mpz_init(shifted_pos);
+
+    int i = 0;
+    while (input[i] != '\0') {
+        int char_val = char_to_val(input[i]); // Get character value
+
+        if (char_val != -1) { // If valid character
+            mpz_set_ui(pos, char_val); // Set the position in GMP
+            mpz_sub_ui(shifted_pos, pos, SHIFT); // Subtract the shift value
+            mpz_mod_ui(shifted_pos, shifted_pos, CHAR_SET_SIZE); // Apply modulo 37 for wrapping
+
+            // Ensure positive result (in case of negative modulus)
+            if (mpz_cmp_ui(shifted_pos, 0) < 0) {
+                mpz_add_ui(shifted_pos, shifted_pos, CHAR_SET_SIZE);
+            }
+
+            int shifted_val = mpz_get_ui(shifted_pos); // Get shifted value
+            output[i] = val_to_char(shifted_val); // Convert back to character
+        } else {
+            output[i] = input[i]; // For invalid characters, keep them unchanged
+        }
+        i++;
+    }
+    output[i] = '\0'; // Null-terminate the output string
+
+    // Clear GMP integers
+    mpz_clear(pos);
+    mpz_clear(shifted_pos);
+}
+
 int main() {
     char input[1000];  // Buffer for input text
     char output[1000]; // Buffer for output text
@@ -72,11 +108,13 @@ int main() {
     // Remove newline character if present
     input[strcspn(input, "\n")] = '\0';
 
-    // Perform Caesar Cipher
+    // Perform Caesar Cipher encryption
     caesar_cipher_using_gmp(input, output);
+    printf("Encrypted text: %s\n", output);
 
-    // Print the result in uppercase
-    printf("%s\n", output);
+    // Perform Caesar Cipher decryption
+    caesar_decipher_using_gmp(output, input);
+    printf("Decrypted text: %s\n", input);
 
     return 0;
 }
